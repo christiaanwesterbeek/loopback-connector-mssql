@@ -1,9 +1,9 @@
-drop table customer;
-drop table location;
-drop table product;
 drop table inventory;
 drop table reservation;
 drop table session;
+drop table customer;
+drop table location;
+drop table product;
 
 go
 
