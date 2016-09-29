@@ -69,6 +69,11 @@ go
 	ttl integer
    ) ;
 
+  create table version
+   (	product_id varchar(64) not null,
+	version integer not null,
+   ) ;
+
 insert into customer (id,[username],email,password,name,military_agency,realm,emailverified,verificationtoken,credentials,challenges,status,created,lastupdated) values ('612','bat','bat@bar.com','$2a$10$beg18wcyqn7trkfic59eb.vmnsewqjwmlym4dng73izb.mka1rjac',null,null,null,null,null,']',']',null,null,null);
 insert into customer (id,username,email,password,name,military_agency,realm,emailverified,verificationtoken,credentials,challenges,status,created,lastupdated) values ('613','baz','baz@bar.com','$2a$10$jksyf2glmdi4cwvqh8astos0b24ldu9p8jccnmri/0rvhtwsicm9c',null,null,null,null,null,']',']',null,null,null);
 insert into customer (id,username,email,password,name,military_agency,realm,emailverified,verificationtoken,credentials,challenges,status,created,lastupdated) values ('610','foo','foo@bar.com','$2a$10$tn1hn7xv6x74ccb7tvfwkeaajtd4/6q4rbcmzgmajewe40xqrrsui',null,null,null,null,null,']',']',null,null,null);
@@ -687,18 +692,19 @@ insert into product (id,name,audible_range,effective_range,rounds,extras,fire_mo
 
 
 
-  alter table customer add primary key (id);
-  alter table inventory add primary key (id);
-  alter table location add primary key (id);
-  alter table product add primary key (id);
-  alter table session add primary key (id);
+  alter table customer add constraint customer_pk primary key (id);
+  alter table inventory add constraint inventory_pk primary key (id);
+  alter table location add constraint location_pk primary key (id);
+  alter table product add constraint product_pk primary key (id);
+  alter table session add constraint session_pk primary key (id);
+  alter table version add constraint version_pk primary key (product_id, version);
   alter table inventory add constraint location_fk foreign key (location_id) references location (id);
   alter table inventory add constraint product_fk foreign key (product_id)
 	  references product (id);
   alter table reservation add constraint reservation_customer_fk foreign key (customer_id) references customer (id);
   alter table reservation add constraint reservation_location_fk foreign key (location_id) references location (id);
   alter table reservation add constraint reservation_product_fk foreign key (product_id) references product (id);
-
+  alter table version add constraint version_product_fk foreign key (product_id) references product (id);
   go
 
   ﻿create view inventory_view
