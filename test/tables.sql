@@ -1,8 +1,16 @@
+if object_id('dbo.inventory', 'U') is not null
 drop table inventory;
+if object_id('dbo.reservation', 'U') is not null
 drop table reservation;
+if object_id('dbo.session', 'U') is not null
 drop table session;
+if object_id('dbo.customer', 'U') is not null
 drop table customer;
+if object_id('dbo.location', 'U') is not null
 drop table location;
+if object_id('dbo.version', 'U') is not null
+drop table version;
+if object_id('dbo.product', 'U') is not null
 drop table product;
 
 go
