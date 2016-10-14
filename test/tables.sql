@@ -4,6 +4,8 @@ drop table product;
 drop table inventory;
 drop table reservation;
 drop table session;
+if object_id('dbo.testgen', 'U') is not null
+drop table testgen;
 
 go
 
@@ -67,6 +69,11 @@ go
    (	id varchar(64) not null,
 	uid varchar(1024),
 	ttl integer
+   ) ;
+
+  create table testgen
+   (	id int not null identity(1,1),
+	name varchar(64)
    ) ;
 
 insert into customer (id,[username],email,password,name,military_agency,realm,emailverified,verificationtoken,credentials,challenges,status,created,lastupdated) values ('612','bat','bat@bar.com','$2a$10$beg18wcyqn7trkfic59eb.vmnsewqjwmlym4dng73izb.mka1rjac',null,null,null,null,null,']',']',null,null,null);
