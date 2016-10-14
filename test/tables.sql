@@ -1,9 +1,17 @@
-drop table customer;
-drop table location;
-drop table product;
+if object_id('dbo.inventory', 'U') is not null
 drop table inventory;
+if object_id('dbo.reservation', 'U') is not null
 drop table reservation;
+if object_id('dbo.session', 'U') is not null
 drop table session;
+if object_id('dbo.customer', 'U') is not null
+drop table customer;
+if object_id('dbo.location', 'U') is not null
+drop table location;
+if object_id('dbo.version', 'U') is not null
+drop table version;
+if object_id('dbo.product', 'U') is not null
+drop table product;
 if object_id('dbo.testgen', 'U') is not null
 drop table testgen;
 
@@ -69,6 +77,11 @@ go
    (	id varchar(64) not null,
 	uid varchar(1024),
 	ttl integer
+   ) ;
+
+  create table version
+   (	product_id varchar(64) not null,
+	version integer not null
    ) ;
 
   create table testgen
@@ -694,18 +707,19 @@ insert into product (id,name,audible_range,effective_range,rounds,extras,fire_mo
 
 
 
-  alter table customer add primary key (id);
-  alter table inventory add primary key (id);
-  alter table location add primary key (id);
-  alter table product add primary key (id);
-  alter table session add primary key (id);
+  alter table customer add constraint customer_pk primary key (id);
+  alter table inventory add constraint inventory_pk primary key (id);
+  alter table location add constraint location_pk primary key (id);
+  alter table product add constraint product_pk primary key (id);
+  alter table session add constraint session_pk primary key (id);
+  alter table version add constraint version_pk primary key (product_id, version);
   alter table inventory add constraint location_fk foreign key (location_id) references location (id);
   alter table inventory add constraint product_fk foreign key (product_id)
 	  references product (id);
   alter table reservation add constraint reservation_customer_fk foreign key (customer_id) references customer (id);
   alter table reservation add constraint reservation_location_fk foreign key (location_id) references location (id);
   alter table reservation add constraint reservation_product_fk foreign key (product_id) references product (id);
-
+  alter table version add constraint version_product_fk foreign key (product_id) references product (id);
   go
 
   ﻿create view inventory_view
